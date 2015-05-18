@@ -18,19 +18,11 @@ class PuzzleManager:
         pass
 
     def solve_puzzles(self):
-        puzzles_solved = 0
-        while puzzles_solved < self.puzzles_to_solve:
-            solution = self.get_and_solve_puzzle()
-            json_result = self.submit_solution(solution)
-            response = json.loads(json_result)
-            pprint(response)
-            puzzles_solved += 1
-
-    def get_and_solve_puzzle(self):
         puzzle = self.get_puzzle()
         puzzle_solver = Ps.PuzzleSolver(puzzle=puzzle)
-        puzzle_solver.solve()
-        return puzzle_solver.get_solution()
+        puzzle_solver.top_left_solve()
+        top_left_solution = puzzle_solver.get_solution()
+        self.submit_solution(top_left_solution)
 
     # Retrieve a puzzle from the server. Returns JSON.
     def get_puzzle(self):
@@ -40,6 +32,8 @@ class PuzzleManager:
         squares = solution.get_squares()
         data = {'id': solution.id, 'squares': squares}
 
-        return requests.post(self.POST_URL, data=json.dumps(data)).text
+        json_result = requests.post(self.POST_URL, data=json.dumps(data)).text
+        response = json.loads(json_result)
+        pprint(response)
 
 
