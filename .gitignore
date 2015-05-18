@@ -31,3 +31,4 @@
 # Recycle Bin used on file shares
 # Windows Installer files
 # Windows shortcuts
+*.pyc

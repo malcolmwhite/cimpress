@@ -22,18 +22,13 @@ class PuzzleSolver(object):
         self.solution = Pz.PuzzleSolution(self.puzzle_id)
 
     def top_left_solve(self):
-        row_range = range(0, self.last_row_index + 1)
-        col_range = range(0, self.last_col_index + 1)
-        return self.solve(row_range, col_range)
-
-    def solve(self, row_range, col_range):
         squares_remain = True
 
         while squares_remain:
             squares_remain = False
             valid_size = 0
-            for row in row_range:
-                for col in col_range:
+            for row in range(0, self.last_row_index + 1):
+                for col in range(0, self.last_col_index + 1):
                     if self.grid[row, col]:
                         squares_remain = True
                         test_size = 1
@@ -103,9 +98,6 @@ class PuzzleSolver(object):
 
         end_plot = plt.imshow(split_grid)
         end_plot.set_interpolation('nearest')
-
-        plt.colorbar()
-        plt.show()
 
         plt.colorbar()
         plt.show()
