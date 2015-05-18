@@ -55,14 +55,20 @@ class PuzzleSolver(object):
         if self.DEBUG_VIZ:
             self.visualize_grids(self.original_grid, self.grid_vis)
 
-    def dummy_solve(self):
-        for row in xrange(0, self.last_row_index):
-            for col in xrange(0, self.last_col_index):
-                if self.puzzle['puzzle'][row][col]:
-                    self.solution.add_square(Sq.Square(col=col, row=row, size=1, row_major=self.ROW_MAJOR))
+    def is_valid_square(self, square):
+        start_row = square.get_row_start(self.ROW_MAJOR)
+        end_row = square.get_row_end(self.ROW_MAJOR)
+        start_col = square.get_col_start(self.ROW_MAJOR)
+        end_col = square.get_col_end(self.ROW_MAJOR)
 
-    def get_solution(self):
-        return self.solution
+        if end_row > self.last_row_index or end_col > self.last_col_index:
+            return False
+        for row in xrange(start_row, end_row + 1):
+            for col in xrange(start_col, end_col + 1):
+                if not self.grid[row, col]:
+                    return False
+
+        return True
 
     def save_square(self, square):
         start_col = square.get_col_start(self.ROW_MAJOR)
@@ -78,6 +84,9 @@ class PuzzleSolver(object):
                 self.grid[row, col] = False
                 if self.DEBUG_VIZ:
                     self.grid_vis[row, col] = square_num
+
+    def get_solution(self):
+        return self.solution
 
     @staticmethod
     def visualize_grids(grid, split_grid):
@@ -101,18 +110,3 @@ class PuzzleSolver(object):
         puzzle_grid = puzzle["puzzle"]
         array = asarray(puzzle_grid, order='F')
         return array
-
-    def is_valid_square(self, square):
-        start_row = square.get_row_start(self.ROW_MAJOR)
-        end_row = square.get_row_end(self.ROW_MAJOR)
-        start_col = square.get_col_start(self.ROW_MAJOR)
-        end_col = square.get_col_end(self.ROW_MAJOR)
-
-        if end_row > self.last_row_index or end_col > self.last_col_index:
-            return False
-        for row in xrange(start_row, end_row + 1):
-            for col in xrange(start_col, end_col + 1):
-                if not self.grid[row, col]:
-                    return False
-
-        return True
