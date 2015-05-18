@@ -7,7 +7,6 @@ import PuzzleSolution as Pz
 
 class PuzzleSolver(object):
     DEBUG_VIZ = False
-    ROW_MAJOR = True
 
     def __init__(self, puzzle):
         self.puzzle = puzzle
@@ -36,7 +35,7 @@ class PuzzleSolver(object):
                 for col in range(self.grid_columns):
                     if self.grid[row, col]:
                         squares_remain = True
-                        while self.is_valid_square(start_col = col, start_row = row, size = test_size):
+                        while self.is_valid_square(start_col=col, start_row=row, size=test_size):
                             test_size += 1
                         valid_size = test_size - 1
                         if valid_size > current_max_size:
@@ -79,7 +78,7 @@ class PuzzleSolver(object):
         end_col = start_col + size - 1
         end_row = start_row + size - 1
         square_num = len(self.solution.get_squares())
-        self.solution.add_square(Sq.Square(row=start_row, col=start_col, row_major=self.ROW_MAJOR, size=size))
+        self.solution.add_square(Sq.Square(row=start_row, col=start_col, size=size))
         for col in xrange(start_col, end_col + 1):
             for row in xrange(start_row, end_row + 1):
                 self.grid[row, col] = False
