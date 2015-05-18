@@ -9,7 +9,7 @@ import PuzzleSolver as Ps
 class PuzzleManager:
     API_KEY = "38c5fe81bf6549bdaafd1898db3a5269"
     BASE_URL = "http://techchallenge.cimpress.com"
-    ENV = "contest"
+    ENV = "trial"
     GET_URL = '{0}/{1}/{2}/puzzle'.format(BASE_URL, API_KEY, ENV)
     POST_URL = '{0}/{1}/{2}/solution'.format(BASE_URL, API_KEY, ENV)
 
