@@ -9,7 +9,7 @@ import PuzzleSolver as Ps
 class PuzzleManager:
     API_KEY = "38c5fe81bf6549bdaafd1898db3a5269"
     BASE_URL = "http://techchallenge.cimpress.com"
-    ENV = "trial"
+    ENV = "contest"
     GET_URL = '{0}/{1}/{2}/puzzle'.format(BASE_URL, API_KEY, ENV)
     POST_URL = '{0}/{1}/{2}/solution'.format(BASE_URL, API_KEY, ENV)
 
@@ -18,11 +18,12 @@ class PuzzleManager:
         pass
 
     def solve_puzzles(self):
-        puzzle = self.get_puzzle()
-        puzzle_solver = Ps.PuzzleSolver(puzzle=puzzle)
-        puzzle_solver.top_left_solve()
-        top_left_solution = puzzle_solver.get_solution()
-        self.submit_solution(top_left_solution)
+        for x in xrange(50):
+            puzzle = self.get_puzzle()
+            puzzle_solver = Ps.PuzzleSolver(puzzle=puzzle)
+            puzzle_solver.top_left_solve()
+            top_left_solution = puzzle_solver.get_solution()
+            self.submit_solution(top_left_solution)
 
     # Retrieve a puzzle from the server. Returns JSON.
     def get_puzzle(self):
