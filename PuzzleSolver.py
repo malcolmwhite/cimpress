@@ -13,8 +13,8 @@ class PuzzleSolver(object):
         self.puzzle = puzzle
         self.puzzle_id = puzzle["id"]
         self.grid = self.get_grid_from_puzzle(puzzle=puzzle)
-        self.last_row_index = self.grid.shape[0] - 1
-        self.last_col_index = self.grid.shape[1] - 1
+        self.grid_rows = self.grid.shape[0]
+        self.grid_columns = self.grid.shape[1]
         self.original_grid = copy(self.grid)
         self.grid_vis = zeros(shape=self.grid.shape)
         self.solution = Pz.PuzzleSolution(self.puzzle_id)
@@ -32,8 +32,8 @@ class PuzzleSolver(object):
             start_row = 0
             current_max_size = 0
 
-            for row in range(0, self.last_row_index + 1):
-                for col in range(0, self.last_col_index + 1):
+            for row in range(self.grid_rows):
+                for col in range(self.grid_columns):
                     if self.grid[row, col]:
                         squares_remain = True
                         while self.is_valid_square(start_col = col, start_row = row, size = test_size):
@@ -46,11 +46,11 @@ class PuzzleSolver(object):
                             found_block = True
                             if previous_max_size is not None and valid_size == previous_max_size:
                                 break
-                    if col + valid_size > self.last_col_index:
+                    if col + valid_size > self.grid_columns:
                         break
                 if previous_max_size is not None and valid_size == previous_max_size:
                             break
-                if row + valid_size > self.last_row_index:
+                if row + valid_size > self.grid_rows:
                     break
 
             # After a full grid sweep, check to see if any squares were found
@@ -63,13 +63,13 @@ class PuzzleSolver(object):
             self.visualize_grids(self.original_grid, self.grid_vis)
 
     def is_valid_square(self, start_col, start_row, size):
-        end_col = start_col + size - 1
-        end_row = start_row + size - 1
+        end_col = start_col + size
+        end_row = start_row + size
 
-        if end_row > self.last_row_index or end_col > self.last_col_index:
+        if end_row > self.grid_rows or end_col > self.grid_columns:
             return False
-        for row in xrange(start_row, end_row + 1):
-            for col in xrange(start_col, end_col + 1):
+        for row in xrange(start_row, end_row):
+            for col in xrange(start_col, end_col):
                 if not self.grid[row, col]:
                     return False
 
