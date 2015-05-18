@@ -19,6 +19,7 @@ class PuzzleSolver(object):
         self.grid_vis = zeros(shape=self.grid.shape)
         self.recent_square = None
         self.current_max_size = 0
+        self.previous_max_size = None
         self.solution = Pz.PuzzleSolution(self.puzzle_id)
 
     def top_left_solve(self):
@@ -27,11 +28,11 @@ class PuzzleSolver(object):
         while squares_remain:
             squares_remain = False
             valid_size = 0
+            test_size = 1
             for row in range(0, self.last_row_index + 1):
                 for col in range(0, self.last_col_index + 1):
                     if self.grid[row, col]:
                         squares_remain = True
-                        test_size = 1
                         test_square = Sq.Square(col=col, row=row, size=test_size, row_major=self.ROW_MAJOR)
                         while self.is_valid_square(test_square):
                             test_size += 1
@@ -42,8 +43,12 @@ class PuzzleSolver(object):
                         if valid_size > self.current_max_size:
                             self.current_max_size = valid_size
                             self.recent_square = Sq.Square(col=col, row=row, size=valid_size, row_major=self.ROW_MAJOR)
+                            if self.previous_max_size is not None and valid_size > self.previous_max_size:
+                                break
                     if col + valid_size > self.last_col_index:
                         break
+                if self.previous_max_size is not None and valid_size > self.previous_max_size:
+                            break
                 if row + valid_size > self.last_row_index:
                     break
 
@@ -78,6 +83,7 @@ class PuzzleSolver(object):
         square_num = len(self.solution.get_squares())
         self.solution.add_square(square)
         self.recent_square = None
+        self.previous_max_size = self.current_max_size
         self.current_max_size = 0
         for col in xrange(start_col, end_col + 1):
             for row in xrange(start_row, end_row + 1):
