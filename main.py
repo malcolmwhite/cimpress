@@ -17,8 +17,8 @@ def main(argv=None):
             raise Usage(msg)
 
         puzzle_manager = pm.PuzzleManager()
-        squares = puzzle_manager.get_and_solve_puzzle()
-        pprint(squares)
+        puzzle_manager.solve_puzzles()
+        # pprint(squares)
 
     except Usage, err:
         print >>sys.stderr, err.msg
